@@ -1,0 +1,21 @@
+name: Archive build artifacts for releases
+
+on:
+  push:
+    tags:
+      - "v*" # Triggers on tags like v1.0.0, v2.1.0, etc.
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    container: espressif/idf:latest # Official ESP-IDF Docker image
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive # Required if using managed components or 3rd party git submodules
+
+      - name: Build the image
+        run: |
+          scripts/build.sh
